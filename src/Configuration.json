@@ -1,0 +1,10 @@
+{
+    "wlan":{
+        "ssid":"Test",
+        "password":"Password"
+    },
+    "backend":{
+        "url":"https://localhost:7141/Authentification/",
+        "password":"Password"
+    }
+}
