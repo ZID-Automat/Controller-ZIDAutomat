@@ -8,4 +8,4 @@ class Eject:
 
 #hier sollte wahrscheinlich statt der ItemId, eine Position oder so sein.
     def eject(self,ItemId:int)-> boolean:
-        pass
+        return True

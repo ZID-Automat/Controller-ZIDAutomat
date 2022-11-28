@@ -10,7 +10,10 @@ from Event import Event
 from Borrow.Borrow import Borrow
 from DataCollect.DataCollect import DataCollect
 
-import network, time
+IsAutomat = False
+if IsAutomat :
+    import network, time
+
 
 
 class Main():
@@ -25,18 +28,18 @@ class Main():
 
     def __init__(self) -> None:
         self.loadConfiguration()
-        self.setupWlan(self.wlanInformation)
-
+        if IsAutomat:
+            self.setupWlan(self.wlanInformation)
 
     def start(self):
-        self._dataCollect = DataCollect()
-        self._borrowManager = Borrow(self)
-
         self._requests = Requests(self.backendUrl)
+
+        self._dataCollect = DataCollect()
+        self._borrowManager = Borrow(self,self._requests)
         
         self.authenticate()
 
-        self._borrowManager.start()
+        self._borrowManager.run()
 
     def onScannedQrCode(self,data):
         self._dataCollect.LogScannedQrCode(data)
@@ -76,7 +79,7 @@ class Main():
         print('wlan connected')
 
     def authenticate(self):
-        self._requests.authenticate(self.backendPassword)
+        self._requests.Authenticate(self.backendPassword)
 
 if __name__ == "__main__":
     Main().start()
