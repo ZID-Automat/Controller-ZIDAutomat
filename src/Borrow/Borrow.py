@@ -35,7 +35,8 @@ class Borrow:
 
                 self._event.onScannedQrCode(data)
 
-                if self._eject.eject():
+                itemdetId = self._eject.eject()
+                if itemdetId >= 0:
                     self._event.onEjectedItem(data)
                     self._lData.InvalidateQrCode(data.ItemId)
                 else:

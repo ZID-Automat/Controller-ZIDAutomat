@@ -21,7 +21,7 @@ class LoadBorrowData:
         return re
     
     #Invalidates a Qr Code, so that it can't be used twice
-    def InvalidateQrCode(self,qrCode):
-        re = self._api.RequestPut("CBorrow/InvalidateQrCode",{"QRCode":qrCode})
+    def InvalidateQrCode(self,qrCode, itemdetId):
+        re = self._api.RequestPut("CBorrow/InvalidateQrCode",{"QRCode":qrCode,"itemdetId":itemdetId})
         return re
 
