@@ -38,7 +38,7 @@ class Borrow:
                 itemdetId = self._eject.eject()
                 if itemdetId >= 0:
                     self._event.onEjectedItem(data)
-                    self._lData.InvalidateQrCode(data.ItemId)
+                    self._lData.InvalidateQrCode(data.ItemId,itemdetId)	
                 else:
                     print ("handle failed Ejection")
                     self._event.onFailedItemEjection(data)
