@@ -6,19 +6,21 @@ from Borrow.dep.LoadBorrowData import LoadBorrowData
 from Borrow.dep.QRCodeReader import QRCodeReader
 from Event import Event
 
+from API.Requests import Requests
+
 # Class that Manages everything related to Borrowing of Items
-class Borrow (threading.Thread):
+class Borrow:
     _qRCodeReader:QRCodeReader
     _eject:Eject
     _lData:LoadBorrowData
 
     _event: Event
 
-    def __init__(self, event):
+    def __init__(self, event,request:Requests ):
         threading.Thread.__init__(self)
         self._qRCodeReader = QRCodeReader()
         self._eject = Eject()
-        self._lData = LoadBorrowData()
+        self._lData = LoadBorrowData(request)
 
         self._event =event
 
@@ -26,10 +28,11 @@ class Borrow (threading.Thread):
         while True:
             qrCode:str = self._qRCodeReader.read()
 
-            if self._lData.ValidateQrCode(qrCode):
-                data = self._lData.LoadItemData(qrCode)
+            valid,itemId = self._lData.ValidateQrCode(qrCode)
 
-                # Ist nur provisorisch, da die LoadITemData Funktion noch nicht implementiert ist, weder am Backend noch im Controller
+            if valid:
+                data = self._lData.LoadItemData(itemId)
+
                 self._event.onScannedQrCode(data)
 
                 if self._eject.eject():
