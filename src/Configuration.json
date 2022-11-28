@@ -4,7 +4,7 @@
         "password":"Password"
     },
     "backend":{
-        "url":"https://localhost:7141/Authentification/",
-        "password":"Password"
+        "url":"https://localhost:7141/",
+        "password":"Super tolles AutomatPasswort"
     }
 }
