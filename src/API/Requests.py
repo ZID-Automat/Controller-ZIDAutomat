@@ -21,10 +21,15 @@ class Requests:
         url = self.baseUrl+EndPoint
         return requests.post(url,headers=header,json =params, verify=self.verifySSL).json()
     
-    def RequestPut(self,EndPoint, params =  {}):
-        header=self.getHeader()
+    def RequestPut(self,EndPoint , params =  {}):
+        header={
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQ29udHJvbGxlciIsIm5iZiI6MTY2OTcyNzc2OCwiZXhwIjoxNjY5NzYzNzY4LCJpYXQiOjE2Njk3Mjc3Njh9.DK3UyQ6U3eI6qaFr3_3xS1Xnyjp439oxGHCxyygoqAo',
+        'Content-Type': 'application/json'
+        }
+        payload = json.dumps(params)
         url = self.baseUrl+EndPoint
-        return requests.put(url,headers=header,json =params, verify=self.verifySSL).json()
+        response = requests.request("PUT", url, headers=header, data=payload,verify=self.verifySSL)
+        return response
 
     def getHeader(self):
         return  {'Authorization': 'Bearer '+self.jwt,  'Content-type':'application/json', 'Accept':'application/json'}

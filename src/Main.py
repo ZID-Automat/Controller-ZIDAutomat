@@ -14,8 +14,6 @@ IsAutomat = False
 if IsAutomat :
     import network, time
 
-
-
 class Main():
     wlanInformation :Tuple[str,str]
     
