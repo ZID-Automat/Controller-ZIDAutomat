@@ -6,6 +6,7 @@ class Eject:
     def __init__(self) -> None:
         pass
 
-#hier sollte wahrscheinlich statt der ItemId, eine Position oder so sein.
-    def eject(self,ItemId:int)-> boolean:
-        return True
+# Gibt ein Item aus. Die ItemId sagt, welches Item ausgegeben werden soll. Returned die ItemInstance id des ausgegebenen Items 
+# wenn das Ausgeben nicht funktioniert hat, wird eine negative Zahl zurückgegeben
+    def eject(self,ItemId:int)-> int:
+        return 0

@@ -2,7 +2,7 @@
 # Just another abstraction for the API
 from typing import Tuple
 from API.Requests import Requests
-
+from API.dep.ItemDetailed import ItemDetailed
 
 class LoadBorrowData:
     _api: Requests
@@ -16,12 +16,10 @@ class LoadBorrowData:
         return (re['valid'],re['itemId'])
 
     #Loads all the relevant Item Data (ItemDetailed)
-    def LoadItemData(self,id):
-        re = self._api.RequestGet("CBorrow/LoadItemData",{"item":id})
-        return re
+    def LoadItemData(self,id)->ItemDetailed:
+        return ItemDetailed(self._api.RequestGet("CBorrow/LoadItemData",{"item":id}))
     
     #Invalidates a Qr Code, so that it can't be used twice
-    def InvalidateQrCode(self,qrCode):
-        re = self._api.RequestPut("CBorrow/InvalidateQrCode",{"QRCode":qrCode})
-        return re
+    def InvalidateQrCode(self,qrCode, itemdetId)->None:
+       self._api.RequestPut("CBorrow/InvalidateQrCode",{"qrCode":qrCode,"itemInstanceId":itemdetId})
 
