@@ -9,4 +9,4 @@ class Eject:
 # Gibt ein Item aus. Die ItemId sagt, welches Item ausgegeben werden soll. Returned die ItemInstance id des ausgegebenen Items 
 # wenn das Ausgeben nicht funktioniert hat, wird eine negative Zahl zurückgegeben
     def eject(self,ItemId:int)-> int:
-        return True
+        return 0
