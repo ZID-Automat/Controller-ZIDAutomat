@@ -1,4 +1,4 @@
 # class reponsible for scanning the QR Code
 class QRCodeReader:
     def read(self)->str:
-        return "48055323-3368-4f4c-83cf-34e3d7ecf40f"
+        return "9a1299ed-70d9-4a07-af47-d5206e6557ab"

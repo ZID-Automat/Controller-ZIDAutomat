@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "src",
+			"path": "."
+		},
+		{
+			"name": "serial:/COM6",
+			"uri": "serial://com6/"
+		}
+	],
+	"settings": {
+		"powershell.cwd": "c:\\Users\\maxie\\Documents\\GitHub\\Controller-ZIDAutomat\\src"
+	}
+}

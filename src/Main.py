@@ -1,83 +1,76 @@
-import json
-
 from io import TextIOWrapper
 import os
-from typing import Dict, Tuple
-from API.Requests import Requests
-
-from Event import Event
-
-from Borrow.Borrow import Borrow
 from DataCollect.DataCollect import DataCollect
-
-IsAutomat = False
-if IsAutomat :
-    import network, time
+import network, time
+import json
+from API.Requests import Requests
+import Borrow.Borrow as Borrow
 
 class Main():
-    wlanInformation :Tuple[str,str]
+    wlanInformation = None
     
     backendUrl:str
     backendPassword:str
 
-    _requests:Requests
-    _borrowManager:Borrow
-    _dataCollect:DataCollect
-
     def __init__(self) -> None:
         self.loadConfiguration()
-        if IsAutomat:
-            self.setupWlan(self.wlanInformation)
+        self.setupWlan(self.wlanInformation)
 
     def start(self):
+        print("start Main")
         self._requests = Requests(self.backendUrl)
+        print("init Request Manager")
+        self._borrowManager = Borrow.BorrowM(self,self._requests)
+        print("init Borrow Manager")
 
         self._dataCollect = DataCollect()
-        self._borrowManager = Borrow(self,self._requests)
-        
+        print("init Data Collect Manager")
+
         self.authenticate()
 
+        print("run Borrow Service")
         self._borrowManager.run()
 
-    def onScannedQrCode(self,data):
-        self._dataCollect.LogScannedQrCode(data)
 
-    def onFailedItemEjection(self,data):
-        self._dataCollect.LogFailedItemEjection(data)
+    def onScannedQrCode(self,itemId,qrCode,itemlocation):
+        self._dataCollect.LogScannedQrCode(itemlocation)
+
+    def onFailedItemEjection(self,itemId,qrCode,itemlocation):
+        self._dataCollect.LogFailedItemEjection(itemlocation)
 
     def onNotValidQrCode(self,QrCode):
          self._dataCollect.LogInvaldScannedQrCode(QrCode)
 
-    def onEjectedItem(self,data):
-        self._dataCollect.LogEjecetedItem(data)
+    def onEjectedItem(self,itemId,qrCode,itemlocation):
+        self._dataCollect.LogEjecetedItem(itemlocation)
 
     def loadConfiguration(self):
-        dir_path = os.path.dirname(os.path.realpath(__file__))
+        f:TextIOWrapper = open('Configuration.json','r')
+        data= json.load(f)
 
-        f:TextIOWrapper = open(dir_path+'/Configuration.json','r')
-        data:dict[str,str]= json.load(f)
-
-        wInform:Dict[str,str] = data['wlan']
+        wInform = data['wlan']
         self.wlanInformation = (wInform['ssid'],wInform['password'])
 
-        bInfrom:Dict[str,str] = data['backend']
+        bInfrom = data['backend']
         self.backendUrl = bInfrom['url']
         self.backendPassword = bInfrom['password']
+        print("Configuration loaded")
 
-    def setupWlan(self,wInfo:Tuple[str,str]):
+    def setupWlan(self,wInfo):
         ssid,key = wInfo
-        #Damit kommen wir inder Schule aber nicht weit, da die Anmeldung da über die Accounts funktioniert.
-        wlan = Network.WLAN(Network.STA_IF)
+        wlan = network.WLAN(network.STA_IF)
         wlan.active(True)
         if not wlan.isconnected():
             print('connect wlan')
             wlan.connect(ssid, key)
             while not wlan.isconnected():
-                pass
-        print('wlan connected')
+                time.sleep(1)
+        print('wlan connected: ' + str(wlan.isconnected()))
 
     def authenticate(self):
         self._requests.Authenticate(self.backendPassword)
 
 if __name__ == "__main__":
-    Main().start()
+    main = Main()
+    main.start()
+ 
