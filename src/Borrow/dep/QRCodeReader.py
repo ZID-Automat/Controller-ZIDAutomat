@@ -7,7 +7,7 @@ class QRCodeReader:
     def __init__(self) -> None:
         
         self.uart = UART(1, 9600)
-        self.uart.init(9600, bits=8, parity=None,rx=Pin.p3, tx=Pin.P1, stop=1)
+        self.uart.init(9600, bits=8, parity=None, tx=Pin.P1, stop=1)
         
 
     def read(self)->str:
