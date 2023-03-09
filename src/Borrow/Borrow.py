@@ -4,14 +4,11 @@ from Borrow.dep.LoadBorrowData import LoadBorrowData
 from Borrow.dep.QRCodeReader import QRCodeReader
 
 from API.Requests import Requests
-from main import Main
 # Class that Manages everything related to Borrowing of Items
 class BorrowM:
     _qRCodeReader:QRCodeReader
     _eject:Eject
     _lData:LoadBorrowData
-
-    _event: Main
 
     def __init__(self, event,request:Requests ):
         self._qRCodeReader = QRCodeReader()

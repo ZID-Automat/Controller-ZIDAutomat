@@ -8,7 +8,3 @@ Der Vierte Teil ist der Main Teil, dieser verwaltet die anderen Teile.
 
 ![](Readme/Architectue.png)  
 
-## Requrered Packages
-pip install requests
-
-pip install json

@@ -3,23 +3,25 @@
 from machine import Pin
 from time import sleep_ms,sleep_us
 
-ClockPin = 12
-Pin1 = 2
-Pin2 = 3
-Pin3 = 6
-Pin4 = 7
-Pin5 = 8
-Pin6 = 9
+ClockPin = 33
+Pin1 = 13
+Pin2 = 10
+Pin3 = 9
+Pin4 = 13
+Pin5 = 12
+Pin6 = 14
 class Eject:
     def __init__(self) -> None:
-        print("init Eject")
-        self.Pins = []
-        pins = [Pin1,Pin2,Pin3,Pin4,Pin5,Pin6]
-        for i in pins:
-            self.Pins.append(Pin(i,Pin.OUT))
-
         self.clock = Pin(ClockPin,Pin.IN)
-        print("Eject init done")
+        self.Pins = [
+            Pin(Pin1,Pin.OUT),
+            Pin(Pin2,Pin.OUT),
+            Pin(Pin3,Pin.OUT),
+            Pin(Pin4,Pin.OUT),
+            Pin(Pin5,Pin.OUT),
+            Pin(Pin6,Pin.OUT)
+        ]
+     
 
 # Gibt ein Item aus. Die ItemId sagt, welches Item ausgegeben werden soll. Returned die ItemInstance id des ausgegebenen Items 
 # wenn das Ausgeben nicht funktioniert hat, wird eine negative Zahl zurückgegeben
@@ -41,22 +43,30 @@ class Eject:
             "J":(3,30)
         }
         for i in str:
-            self.PinSignal(Button[i][0],Button[i][1])
+            self.PinSignfal2(Button[i][0],Button[i][1])
 
     #Diese Funktion wurde imprinzip aus dem Original ZID Automat Code übernommen(nur halt in python übersetzt und optimiert)
     #NICHT GETESTET!!!
     def PinSignal(self,Pin:int,Laenge:int):
         PinOb = self.Pins[Pin]
-
+        print("PinOB")
         if self.clock.value() == 0:
+            print("val")
             sleep_ms(30)
-        while (self.clock.value() == 1):
+        abcdefg = self.clock.value() == 1
+        while (abcdefg):
+            print("val2")
             sleep_us(5) 
+            abcdefg = self.clock.value() == 1
         sleep_ms(10)
+
 
         sleep_ms(Laenge)
+        
         PinOb.on()
+
         sleep_ms(10)
+
         PinOb.off()
 
         for i in range(0,3):
@@ -64,5 +74,19 @@ class Eject:
             PinOb.on()
             sleep_ms(10)
             PinOb.off()
+        sleep_ms(200)      
 
-        sleep_ms(200)        
+    def PinSignfal2(self,Pin:int,Laenge:int):
+        while(self.clock.value() == 0):
+            sleep_us(5)
+        while(self.clock.value() == 1):
+            sleep_us(5)
+        sleep_ms(10)
+        sleep_ms(Laenge)
+        self.Pins[Pin].value(1)
+        sleep_ms(10)
+        self.Pins[Pin].value(0)
+
+        sleep_ms(1000)
+
+

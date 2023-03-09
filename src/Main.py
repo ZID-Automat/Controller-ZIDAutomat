@@ -26,7 +26,7 @@ class Main():
         self._dataCollect = DataCollect()
         print("init Data Collect Manager")
 
-        self.authenticate()
+      #  self.authenticate()
 
         print("run Borrow Service")
         self._borrowManager.run()
@@ -69,8 +69,3 @@ class Main():
 
     def authenticate(self):
         self._requests.Authenticate(self.backendPassword)
-
-if __name__ == "__main__":
-    main = Main()
-    main.start()
- 
