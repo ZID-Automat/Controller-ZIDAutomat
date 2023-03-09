@@ -3,6 +3,7 @@
 from API.Requests import Requests
 from API.dep.ItemDetailed import ItemDetailed
 
+# class resposible or leading the data from the API
 class LoadBorrowData:
     _api: Requests
 
