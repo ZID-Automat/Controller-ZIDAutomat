@@ -45,18 +45,21 @@ class Eject:
 
     def PinSignfal2(self,Pin:int, Laenge:int):
         print("Waiting for Clock to not be zero")
-        if(self.clock.value() == 0):
-            sleep_ms(30)
+        while(self.clock.value() == 0):
+            sleep_us(1)
         print("Waiting for Clock to not be one")
         while(self.clock.value() == 1):
             sleep_us(1)
         print("Clock is zero, sending signal")
         sleep_ms(Laenge)
         self.Pins[Pin].on()
-        sleep_ms(100)
+        sleep_ms(10)
         self.Pins[Pin].off()
-        print("PinSignal was send")
         sleep_ms(1000)
+        print("PinSignal was send")
+
+    
+
 
 
 

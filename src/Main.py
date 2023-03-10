@@ -1,10 +1,12 @@
 from io import TextIOWrapper
 import os
 from DataCollect.DataCollect import DataCollect
-import network, time
 import json
 from API.Requests import Requests
 import Borrow.Borrow as Borrow
+# class reponsible for ejecting an Item
+from machine import Pin
+from time import sleep_ms,sleep_us
 
 class Main():
     wlanInformation = None
@@ -69,3 +71,27 @@ class Main():
 
     def authenticate(self):
         self._requests.Authenticate(self.backendPassword)
+
+def AusgabePin(pin:int, clock:int, Laenge:int): 
+
+    pin = Pin(pin, Pin.OUT)
+    clock = Pin(clock, Pin.IN)
+    pin.on()
+
+    print("Waiting for Clock to not be zero")
+    while(clock.value() == 0):
+        sleep_us(5)
+    print("Waiting for Clock to not be one")
+    while(clock.value() != 0):
+        sleep_us(5)
+
+    print("Clock is zero, sending signal")
+    sleep_ms(10)
+
+    sleep_ms(Laenge)
+    pin.off()
+    sleep_ms(10)
+    pin.on()
+    sleep_ms(1000)
+
+    print("PinSignal was send")
