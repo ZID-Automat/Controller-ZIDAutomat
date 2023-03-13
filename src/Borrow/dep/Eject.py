@@ -9,7 +9,6 @@ Pin2 = 12
 Pin3 = 14
 Pin4 = 27
 Pin5 = 26
-Pin6 = 25
 class Eject:
     def __init__(self) -> None:
         self.clock = Pin(ClockPin,Pin.IN)
@@ -19,8 +18,9 @@ class Eject:
             Pin(Pin3,Pin.OUT),
             Pin(Pin4,Pin.OUT),
             Pin(Pin5,Pin.OUT),
-            Pin(Pin6,Pin.OUT) 
         ]
+        for p in self.Pins:
+            p.on()
      
 
     def eject(self,Location:str)-> int:
@@ -29,36 +29,39 @@ class Eject:
 
     def PressCode(self,str:str):
         Button = {
-            "A":(1,20),
-            "B":(2,20),
-            "C":(3,20),
-            "D":(4,20),
-            "E":(5,20),
-            "F":(0,20),
-            "G":(1,30),
-            "H":(2,30),
-            "I":(3,30),
-            "J":(0,30)
+            "A":(0,20),
+            "B":(1,20),
+            "D":(2,20),
+            "E":(3,20),
+            "F":(4,30),
+            "G":(0,30),
+            "H":(1,30),
+            "I":(2,30),
+            "J":(3,30)
         }
         for i in str:
-            self.PinSignfal2(Button[i][0],Button[i][1])
+            self.PinSignfal2(Button[i][0],self.clock,Button[i][1])
 
-    def PinSignfal2(self,Pin:int, Laenge:int):
+    def AusgabePin(self,pin, clock, Laenge:int): 
         print("Waiting for Clock to not be zero")
-        while(self.clock.value() == 0):
-            sleep_us(1)
+        while(clock.value() == 0):
+            sleep_us(5)
         print("Waiting for Clock to not be one")
-        while(self.clock.value() == 1):
-            sleep_us(1)
-        print("Clock is zero, sending signal")
-        sleep_ms(Laenge)
-        self.Pins[Pin].on()
+        while(clock.value() != 0):
+            sleep_us(5)
+
         sleep_ms(10)
-        self.Pins[Pin].off()
+        print("Clock is one, sending signal")
+
+
+        sleep_ms(Laenge)
+        pin.off()
+        sleep_ms(10)
+        pin.on()
         sleep_ms(1000)
+
         print("PinSignal was send")
 
-    
 
 
 

@@ -85,8 +85,9 @@ def AusgabePin(pin:int, clock:int, Laenge:int):
     while(clock.value() != 0):
         sleep_us(5)
 
-    print("Clock is zero, sending signal")
     sleep_ms(10)
+    print("Clock is one, sending signal")
+
 
     sleep_ms(Laenge)
     pin.off()
