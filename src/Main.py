@@ -22,16 +22,16 @@ class Main():
         print("start Main")
         self._requests = Requests(self.backendUrl)
         print("init Request Manager")
-        self._borrowManager = Borrow.BorrowM(self,self._requests)
+        self._borrowManager = Borrow.BorrowM(self,self._requests, (self.pins, self.clockPins, self.QrCodePin))
         print("init Borrow Manager")
-
         self._dataCollect = DataCollect()
         print("init Data Collect Manager")
 
       #  self.authenticate()
 
         print("run Borrow Service")
-        self._borrowManager.run()
+        while True:
+            self._borrowManager.run()
 
 
     def onScannedQrCode(self,itemId,qrCode,itemlocation):
@@ -56,6 +56,12 @@ class Main():
         bInfrom = data['backend']
         self.backendUrl = bInfrom['url']
         self.backendPassword = bInfrom['password']
+
+        PinConf = data["PinConfiguration"]
+        self.pins = PinConf["ButtonPins"]
+        self.clockPins = PinConf["ClockPins"]
+        self.QrCodePin = PinConf["QRCodePin"]
+
         print("Configuration loaded")
 
     def setupWlan(self,wInfo):
@@ -71,28 +77,3 @@ class Main():
 
     def authenticate(self):
         self._requests.Authenticate(self.backendPassword)
-
-def AusgabePin(pin:int, clock:int, Laenge:int): 
-
-    pin = Pin(pin, Pin.OUT)
-    clock = Pin(clock, Pin.IN)
-    pin.on()
-
-    print("Waiting for Clock to not be zero")
-    while(clock.value() == 0):
-        sleep_us(5)
-    print("Waiting for Clock to not be one")
-    while(clock.value() != 0):
-        sleep_us(5)
-
-    sleep_ms(10)
-    print("Clock is one, sending signal")
-
-
-    sleep_ms(Laenge)
-    pin.off()
-    sleep_ms(10)
-    pin.on()
-    sleep_ms(1000)
-
-    print("PinSignal was send")

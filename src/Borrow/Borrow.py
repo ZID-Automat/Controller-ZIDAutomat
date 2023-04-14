@@ -10,42 +10,40 @@ class BorrowM:
     _eject:Eject
     _lData:LoadBorrowData
 
-    def __init__(self, event,request:Requests ):
+    def __init__(self, event,request:Requests, PinConfiguration ):
         self._qRCodeReader = QRCodeReader()
-        self._eject = Eject()
-        self._lData = LoadBorrowData(request)
+        self._eject = Eject(PinConfiguration[0],PinConfiguration[1])
+        self._lData = LoadBorrowData(request,PinConfiguration[3])
 
         self._event = event
 
     def run(self):
-        #loop forever aber noch nicht, weil dings
-        for i in range(0,1):
-            qrCode:str = self._qRCodeReader.read()
-            print("QR Code was read" + qrCode)
+        qrCode:str = self._qRCodeReader.read()
+        print("QR Code was read" + qrCode)
 
-            valid,itemId = self._lData.ValidateQrCode(qrCode)
+        valid,itemId = self._lData.ValidateQrCode(qrCode)
 
-            if valid:
-                print ("QRCode is Valid")
-                itemLocation = self._lData.ItemLocation(itemId)
-                print(itemLocation)
-                self._event.onScannedQrCode(qrCode,valid,itemLocation)
-                print("Item Data was loaded")
+        if valid:
+            print ("QRCode is Valid")
+            itemLocation = self._lData.ItemLocation(itemId)
+            print(itemLocation)
+            self._event.onScannedQrCode(qrCode,valid,itemLocation)
+            print("Item Data was loaded")
 
-                print("start Ejecting Item")
-                          
-                if self._eject.eject(itemLocation)      :
-                    self._event.onEjectedItem(itemId,qrCode,itemLocation)
-                    print("Item was ejected")
-                    self._lData.InvalidateQrCode(qrCode)	
-                    print("QR Code was invalidated")
-                else:
-                    print ("handle failed Ejection")
-                    self._event.onFailedItemEjection(itemId,qrCode,itemLocation)
-
+            print("start Ejecting Item")
+                      
+            if self._eject.eject(itemLocation)      :
+                self._event.onEjectedItem(itemId,qrCode,itemLocation)
+                print("Item was ejected")
+                self._lData.InvalidateQrCode(qrCode)	
+                print("QR Code was invalidated")
             else:
-                print ("handle not Valid QR Code")
-                self._event.onNotValidQrCode(qrCode)
+                print ("handle failed Ejection")
+                self._event.onFailedItemEjection(itemId,qrCode,itemLocation)
+
+        else:
+            print ("handle not Valid QR Code")
+            self._event.onNotValidQrCode(qrCode)
 
 
 
