@@ -2,8 +2,8 @@ import json
 import ujson
 import urequests
 
-class Requests:
-    jwt:str
+class Requestsi:
+    jwt:str = ""
     baseUrl:str
 
     verifySSL = False
@@ -19,7 +19,11 @@ class Requests:
     def RequestPost(self,EndPoint , params =  {}):
         header=self.getHeader()
         url = self.baseUrl+EndPoint
-        return urequests.post(url,headers=header,json =params).json()
+        print(url)
+        print(params)
+        resp =  urequests.post(url,headers=header,json =params)
+        print(resp)
+        return resp.json()
     
     def RequestPatch(self,EndPoint , params =  {}):
         header=self.getHeader()
@@ -34,6 +38,6 @@ class Requests:
     def Authenticate(self,password:str):
         print("Authenticating")
         urli = self.baseUrl+"Authentification/AutomatLogin"
-        bo =  ujson.dumps({"ControllerPassword":password})
+        bo =  ujson.dumps({"controllerPassword":password})
         self.jwt = urequests.post(url= urli,headers = {'content-type': 'application/json'} ,data = bo).text
         print("sucessful Authenticated, jwt loaded")

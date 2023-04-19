@@ -2,18 +2,18 @@ from Borrow.dep.Eject import Eject
 from Borrow.dep.LoadBorrowData import LoadBorrowData
 
 from Borrow.dep.QRCodeReader import QRCodeReader
+from API.Requests import Requestsi
 
-from API.Requests import Requests
 # Class that Manages everything related to Borrowing of Items
 class BorrowM:
     _qRCodeReader:QRCodeReader
     _eject:Eject
     _lData:LoadBorrowData
 
-    def __init__(self, event,request:Requests, PinConfiguration ):
-        self._qRCodeReader = QRCodeReader()
-        self._eject = Eject(PinConfiguration[0],PinConfiguration[1])
-        self._lData = LoadBorrowData(request,PinConfiguration[3])
+    def __init__(self, event,request:Requestsi, PinConfiguration ):
+        self._qRCodeReader = QRCodeReader(22)
+        self._eject = Eject()
+        self._lData = LoadBorrowData(request)
 
         self._event = event
 

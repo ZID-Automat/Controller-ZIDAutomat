@@ -1,18 +1,18 @@
 
 # Just another abstraction for the API
-from API.Requests import Requests
+from API.Requests import Requestsi
 from API.dep.ItemDetailed import ItemDetailed
 
 # class resposible or leading the data from the API
 class LoadBorrowData:
-    _api: Requests
+    _api: Requestsi
 
-    def __init__(self,api:Requests) -> None:
+    def __init__(self,api:Requestsi) -> None:
         self._api = api
 
     #Returns if there is an valid QRCode Bool int Tuple
     def ValidateQrCode(self,qrCode:str):
-        re = self._api.RequestPost("CBorrow/ValidateQrCode",{"QRCode":qrCode})
+        re = self._api.RequestPost("CBorrow/ValidateQrCode",{"qrCode":qrCode})
         return (re['valid'],re['itemId'])
 
     #Loads all the relevant Item Data (ItemDetailed)

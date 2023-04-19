@@ -13,4 +13,5 @@ class QRCodeReader:
         while True:
             textB = uart1.read()
             if textB is not None:
-                return textB.decode('UTF-8')
+                print("read: "+textB.decode('UTF-8'))
+                return textB.decode('UTF-8')[:-2]
