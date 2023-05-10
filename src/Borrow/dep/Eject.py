@@ -19,7 +19,7 @@ from machine import Pin, PWM
 
 
 class Eject:
-    def __init__(self, Pins = [13,12,14,27,26,25], ClockPins = 34, RelePin = 15) -> None:
+    def __init__(self, Pins = [13,12,14,26,27,25], ClockPins = 34, RelePin = 15) -> None:
         self.Pin1 = Pins[0]
         self.Pin2 = Pins[1]
         self.Pin3 = Pins[2]
@@ -52,7 +52,9 @@ class Eject:
         out = Pin(pin, Pin.OUT)
         
         RelePin = Pin(relePin, Pin.OUT)
-        RelePin.value(ReleVal)
+        RelePin.value(ReleVal)  
+
+        print("Rele Pin: ",str(RelePin)+ "ReleValue: ",str(ReleVal))
 
         clockRead = ADC(Pin(clock))
 
