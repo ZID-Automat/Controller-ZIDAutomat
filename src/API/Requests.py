@@ -1,6 +1,7 @@
 import json 
 import ujson
 import urequests
+import gc;
 
 class Requestsi:
     jwt:str = ""
@@ -16,14 +17,12 @@ class Requestsi:
         url = self.baseUrl+EndPoint
         return urequests.get(url,headers=header).json()
     
-    def RequestPost(self,EndPoint , params =  {}):
+    def RequestPost(self,EndPoint , params =  {}, ReturnsJson = True):
         header=self.getHeader()
         url = self.baseUrl+EndPoint
-        print(url)
-        print(params)
         resp =  urequests.post(url,headers=header,json =params)
-        print(resp)
-        return resp.json()
+        if ReturnsJson:
+           return resp.json()
     
     def RequestPatch(self,EndPoint , params =  {}):
         header=self.getHeader()
@@ -33,6 +32,7 @@ class Requestsi:
         return response
 
     def getHeader(self):
+        gc.collect()
         return  {'Authorization': 'Bearer '+self.jwt,  'Content-type':'application/json', 'Accept':'application/json'}
 
     def Authenticate(self,password:str):
@@ -41,3 +41,5 @@ class Requestsi:
         bo =  ujson.dumps({"controllerPassword":password})
         self.jwt = urequests.post(url= urli,headers = {'content-type': 'application/json'} ,data = bo).text
         print("sucessful Authenticated, jwt loaded")
+
+   

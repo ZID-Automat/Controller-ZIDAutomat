@@ -33,7 +33,6 @@ class Eject:
     def eject(self,Location:str)-> int:
         for i in Location:
             self.PressCode(i)
-        return True
 
     def PressCode(self,stri:str):
         Button = {

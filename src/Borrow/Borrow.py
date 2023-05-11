@@ -32,14 +32,11 @@ class BorrowM:
 
             print("start Ejecting Item")
                       
-            if self._eject.eject(itemLocation)      :
-                self._event.onEjectedItem(itemId,qrCode,itemLocation)
-                print("Item was ejected")
-                self._lData.InvalidateQrCode(qrCode)	
-                print("QR Code was invalidated")
-            else:
-                print ("handle failed Ejection")
-                self._event.onFailedItemEjection(itemId,qrCode,itemLocation)
+            self._eject.eject(itemLocation)
+            self._event.onEjectedItem(itemId,qrCode,itemLocation)
+            print("Item was ejected")
+            self._lData.InvalidateQrCode(qrCode)	
+            print("QR Code was invalidated")
 
         else:
             print ("handle not Valid QR Code")
