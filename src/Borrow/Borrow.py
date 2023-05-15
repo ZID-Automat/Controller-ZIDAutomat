@@ -16,7 +16,7 @@ class BorrowM:
         self._qRCodeReader = QRCodeReader(22)
         self._eject = Eject()
         self._lData = LoadBorrowData(request)
-        self._output = ScreenOutput()
+        self.output = ScreenOutput()
         self._event = event
 
     def run(self):
@@ -25,13 +25,14 @@ class BorrowM:
 
         qrCode:str = self._qRCodeReader.read()
         self.output.print("QR Code was scanned")
-        self._event.onScannedQrCode(qrCode,valid,itemLocation)
 
         valid,itemId = self._lData.ValidateQrCode(qrCode)
 
         if valid:
             self.output.print("QR is valid")
             itemLocation = self._lData.ItemLocation(itemId)
+            self._event.onScannedQrCode(qrCode,valid,itemLocation)
+
             self.output.print("Now ejecting Item")
             self._lData.InvalidateQrCode(qrCode)	
             self._eject.eject(itemLocation)
@@ -39,7 +40,7 @@ class BorrowM:
             self._event.onEjectedItem(itemId,qrCode,itemLocation)
             self.output.print("Invalidating QR Code")
         else:
-            self._output.print("QR Code is not valid try again or contact an admin")
+            self.output.print("QR Code is not valid try again or contact an admin")
             self._event.onNotValidQrCode(qrCode)
 
 
