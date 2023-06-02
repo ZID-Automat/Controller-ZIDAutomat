@@ -19,7 +19,7 @@ from machine import Pin, PWM
 
 
 class Eject:
-    def __init__(self, Pins = [13,12,14,26,27,25], ClockPins = 34, RelePin = 15) -> None:
+    def __init__(self, Pins = [13,12,14,27,25,26], ClockPins = 34, RelePin = 15) -> None:
         self.Pin1 = Pins[0]
         self.Pin2 = Pins[1]
         self.Pin3 = Pins[2]

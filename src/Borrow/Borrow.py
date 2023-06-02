@@ -1,6 +1,6 @@
 from Borrow.dep.Eject import Eject
 from Borrow.dep.LoadBorrowData import LoadBorrowData
-from Borrow.dep.ScreenOutout import ScreenOutput
+
 
 
 from Borrow.dep.QRCodeReader import QRCodeReader
@@ -12,36 +12,45 @@ class BorrowM:
     _eject:Eject
     _lData:LoadBorrowData
 
-    def __init__(self, event,request:Requestsi, PinConfiguration):
-        self._qRCodeReader = QRCodeReader(22)
+    def __init__(self, event,request:Requestsi, PinConfiguration, screen):
+        self._qRCodeReader = QRCodeReader(18)
         self._eject = Eject()
         self._lData = LoadBorrowData(request)
-        self.output = ScreenOutput()
+        self.output = screen
         self._event = event
 
     def run(self):
-        self.output.print("Go to www.ZIDAutomat.com to borrow an Item")
-        self.output.print("Scan the QR Code here(purple thing)")
+        self.output.print("www.ZIDAutoat.at",0)
+        self.output.print("Scan QRCode",1)
 
         qrCode:str = self._qRCodeReader.read()
-        self.output.print("QR Code was scanned")
+        self.output.print("QR Code",0)
+        self.output.print("Scanned",1)
+
 
         valid,itemId = self._lData.ValidateQrCode(qrCode)
 
         if valid:
-            self.output.print("QR is valid")
+            self.output.print("QRCode",0)
+            self.output.print("is Valid",1)
             itemLocation = self._lData.ItemLocation(itemId)
-            self._event.onScannedQrCode(qrCode,valid,itemLocation)
+            #self._event.onScannedQrCode(qrCode,valid,itemLocation)
 
-            self.output.print("Now ejecting Item")
+            self.output.print("Invalidateing",0)
+            self.output.print("QrCode",1)
             self._lData.InvalidateQrCode(qrCode)	
+            self.output.print("Start Eject",0)
+            self.output.print("",1)
             self._eject.eject(itemLocation)
-            self.output.print("Invalidate QR Code")
-            self._event.onEjectedItem(itemId,qrCode,itemLocation)
-            self.output.print("Invalidating QR Code")
+           # self._event.onEjectedItem(itemId,qrCode,itemLocation)
+
+            self.output.print("Item Ejected",0)
+            self.output.print("",1)
         else:
-            self.output.print("QR Code is not valid try again or contact an admin")
-            self._event.onNotValidQrCode(qrCode)
+            self.output.print("QRCode not valid",0)
+            self.output.print("contact Admin",1)
+
+           # self._event.onNotValidQrCode(qrCode)
 
 
 

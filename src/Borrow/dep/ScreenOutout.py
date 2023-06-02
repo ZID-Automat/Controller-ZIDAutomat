@@ -9,8 +9,8 @@ class ScreenOutput:
         self.lcd = LCD1602(self.i2c, Address)
 
 
-    def print(self, text:str, dur:int):
-        self.lcd.puts(text, 0, 0)
-        time.sleep(dur)
-        lcd.clear()
+    def print(self, text:str, line:int):
+        if(line == 0):
+            self.lcd.clear()
+        self.lcd.puts(text, 0, line)
         
