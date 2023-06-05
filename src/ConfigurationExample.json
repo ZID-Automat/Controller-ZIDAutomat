@@ -1,0 +1,15 @@
+{
+    "wlan":{
+        "ssid":"",
+        "password":""
+    },
+    "backend":{
+        "url":"https://10.36.1.232:7141/",
+        "password":"Super tolles AutomatPasswort"
+    },
+    "PinConfiguration":{
+        "QRCodePin": 21,
+        "ButtonPins": [13,12,14,27,26,25],
+        "ClockPins":[32,33]
+    }
+}
