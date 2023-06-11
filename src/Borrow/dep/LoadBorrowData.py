@@ -13,7 +13,7 @@ class LoadBorrowData:
     #Returns if there is an valid QRCode Bool int Tuple
     def ValidateQrCode(self,qrCode:str):
         re = self._api.RequestPost("CBorrow/ValidateQrCode",{"qrCode":qrCode})
-        return (re['valid'],re['itemId'])
+        return (re['valid'],re['itemId'],re['message'],re['message2'])
 
     #Loads all the relevant Item Data (ItemDetailed)
     def LoadItemData(self,id)->ItemDetailed:

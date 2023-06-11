@@ -1,7 +1,7 @@
 from Borrow.dep.Eject import Eject
 from Borrow.dep.LoadBorrowData import LoadBorrowData
 
-
+from time import sleep
 
 from Borrow.dep.QRCodeReader import QRCodeReader
 from API.Requests import Requestsi
@@ -28,11 +28,12 @@ class BorrowM:
         self.output.print("Scanned",1)
 
 
-        valid,itemId = self._lData.ValidateQrCode(qrCode)
+        valid,itemId, message, message2 = self._lData.ValidateQrCode(qrCode)
 
         if valid:
             self.output.print("QRCode",0)
             self.output.print("is Valid",1)
+            sleep(0.2)
             itemLocation = self._lData.ItemLocation(itemId)
             #self._event.onScannedQrCode(qrCode,valid,itemLocation)
 
@@ -42,13 +43,20 @@ class BorrowM:
             self.output.print("Start Eject",0)
             self.output.print("",1)
             self._eject.eject(itemLocation)
+            sleep(5)
+
            # self._event.onEjectedItem(itemId,qrCode,itemLocation)
 
             self.output.print("Item Ejected",0)
             self.output.print("",1)
+            sleep(0.4)
         else:
             self.output.print("QRCode not valid",0)
-            self.output.print("contact Admin",1)
+            sleep(1)
+            self.output.print(message,0)
+            self.output.print(message2,1)
+            sleep(2)
+
 
            # self._event.onNotValidQrCode(qrCode)
 
