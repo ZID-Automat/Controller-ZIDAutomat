@@ -5,6 +5,7 @@ import network
 from machine import Pin
 from time import sleep
 from Borrow.dep.ScreenOutout import ScreenOutput
+import neopixel
 class Main123():
     wlanInformation = None
     
@@ -26,7 +27,10 @@ class Main123():
         self._borrowManager._eject.eject(str)
 
     def start(self):
-        self.screen.print("Start Main",0)
+        self.screen.print("Setup LED",0)
+
+        self.setupLED(self.ledpin,(self.rot,self.gruen,self.blau),self.lednum)
+        self.screen.print("Start MAIN",0)
 
         from API.Requests import Requestsi
         import Borrow.Borrow as Borrow
@@ -86,6 +90,14 @@ class Main123():
         self.clockPins = PinConf["ClockPins"]
         self.QrCodePin = PinConf["QRCodePin"]
 
+        ledConf = data["LED"]
+        self.rot = ledConf["cR"]
+        self.gruen = ledConf["cG"]
+        self.blau = ledConf["cB"]
+        self.ledpin = ledConf["pin"]
+        self.lednum = ledConf["n"]
+        
+
         print("Configuration loaded")
 
     def setupWlan(self,wInfo):
@@ -98,6 +110,12 @@ class Main123():
             while not wlan.isconnected():
                 sleep(1)
         print('wlan connected: ' + str(wlan.isconnected()))
+
+    def setupLED(self,color, pinnum, lednum):
+        self.np = neopixel.NeoPixel(Pin(pinnum), lednum)
+        for i in range(self.lednum):
+            self.np[i] = color
+        self.np.write()
 
     def authenticate(self):
 

@@ -11,5 +11,12 @@
         "QRCodePin": 21,
         "ButtonPins": [13,12,14,27,26,25],
         "ClockPins":[32,33]
+    },
+    "LED":{
+        "cR":0,
+        "cG":0,
+        "cB":0,
+        "pin":0,
+        "n":0
     }
 }
